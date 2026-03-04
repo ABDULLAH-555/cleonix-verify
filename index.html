@@ -11,6 +11,7 @@
             --dark-blue: #0B1C2D;
             --success-color: #059669;
             --error-color: #dc2626;
+            --linkedin-blue: #0077b5;
             --bg-gradient: linear-gradient(135deg, #0B1C2D, #123B5A);
         }
 
@@ -60,18 +61,29 @@
             font-family: inherit;
         }
 
-        button {
+        .btn {
             padding: 12px 24px;
-            background: #00E676;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
-            color: #0B1C2D;
             transition: 0.3s;
+            display: inline-block;
+            text-decoration: none;
         }
 
-        button:hover { background: #00c95f; transform: translateY(-2px); }
+        .btn-verify { background: #00E676; color: #0B1C2D; }
+        .btn-verify:hover { background: #00c95f; transform: translateY(-2px); }
+
+        .btn-linkedin { 
+            background: var(--linkedin-blue); 
+            color: white; 
+            font-size: 0.85rem; 
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn-linkedin:hover { background: #005a87; }
 
         #display-area { margin-top: 25px; text-align: left; }
 
@@ -130,10 +142,9 @@
     <h2>Certificate Verification Portal</h2>
 
     <input type="text" id="certInput" placeholder="Enter Certificate ID">
-    <button onclick="handleManualVerify()">Verify Now</button>
+    <button class="btn btn-verify" onclick="handleManualVerify()">Verify Now</button>
 
-    <div id="display-area">
-        </div>
+    <div id="display-area"></div>
 </div>
 
 <div class="footer">
@@ -143,7 +154,6 @@
 <script>
     const displayArea = document.getElementById("display-area");
 
-    // Function to process and display results
     function performVerification(certId) {
         if(!certId) return;
         
@@ -155,6 +165,9 @@
                 const cert = data.find(c => c.id.trim() === certId.trim());
                 
                 if(cert) {
+                    // Pre-fill LinkedIn Certification URL
+                    const linkedinUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(cert.role + ' - Cleonix')}&organizationName=Cleonix&issueYear=2026&issueMonth=3&certId=${encodeURIComponent(cert.id)}&certUrl=${encodeURIComponent(window.location.href)}`;
+
                     displayArea.innerHTML = `
                         <div class="result-card">
                             <div class="data-row"><span class="label">Name</span><span class="value">${cert.name}</span></div>
@@ -162,6 +175,9 @@
                             <div class="data-row" style="border:none"><span class="label">Duration</span><span class="value">${cert.duration}</span></div>
                             <div style="text-align:center">
                                 <span class="status-badge status-valid">✓ VERIFIED AUTHENTIC</span>
+                                <a href="${linkedinUrl}" target="_blank" class="btn btn-linkedin">
+                                    + Add to LinkedIn Profile
+                                </a>
                             </div>
                         </div>`;
                 } else {
@@ -177,7 +193,6 @@
             });
     }
 
-    // 1. Handle Automatic verification via URL (e.g. ?id=CLEO-001)
     const urlParams = new URLSearchParams(window.location.search);
     const autoId = urlParams.get("id");
     if(autoId) {
@@ -185,7 +200,6 @@
         performVerification(autoId);
     }
 
-    // 2. Handle Manual button click
     function handleManualVerify() {
         const inputVal = document.getElementById("certInput").value;
         performVerification(inputVal);
