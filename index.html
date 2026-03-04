@@ -1,176 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate Verification | Cleonix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --success-color: #059669;
-            --error-color: #dc2626;
-            --text-dark: #1f2937;
-            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleonix Certificate Verification</title>
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dark);
-        }
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0B1C2D, #123B5A);
+    color: white;
+    text-align: center;
+    padding: 50px;
+}
 
-        .container {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.05);
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.8);
-        }
+.container {
+    background: white;
+    color: #0B1C2D;
+    max-width: 500px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
 
-        .logo-area {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: -0.5px;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
+h1 {
+    margin-bottom: 10px;
+}
 
-        h2 {
-            font-size: 1.1rem;
-            color: #64748b;
-            margin-bottom: 2rem;
-            font-weight: 400;
-        }
+input {
+    padding: 10px;
+    width: 80%;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
 
-        #result-card {
-            background: #fdfdfd;
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid #f1f5f9;
-            text-align: left;
-            transition: all 0.3s ease;
-        }
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background: #00E676;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-        .data-row {
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 8px;
-        }
+button:hover {
+    background: #00c95f;
+}
 
-        .label {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
 
-        .value {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
+.valid {
+    background: #d4edda;
+    color: #155724;
+}
 
-        .status-badge {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 6px 16px;
-            border-radius: 99px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+.invalid {
+    background: #f8d7da;
+    color: #721c24;
+}
 
-        .status-valid {
-            background: #dcfce7;
-            color: var(--success-color);
-        }
-
-        .status-invalid {
-            background: #fee2e2;
-            color: var(--error-color);
-        }
-
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(3600deg); } }
-    </style>
+.footer {
+    margin-top: 40px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="logo-area">Cleonix</div>
-    <h2>Official Certificate Verification</h2>
+<h1>Cleonix</h1>
+<p>AI & Sustainable Energy Systems</p>
 
-    <div id="display-area">
-        <div class="loading-spinner"></div>
-        <p>Verifying Credentials...</p>
-    </div>
+<div class="container">
+    <h2>Certificate Verification Portal</h2>
+
+    <input type="text" id="certInput" placeholder="Enter Certificate ID">
+    <br>
+    <button onclick="verifyCertificate()">Verify</button>
+
+    <div id="resultBox"></div>
+</div>
+
+<div class="footer">
+Verified Digital Credential | Cleonix
 </div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-    const certId = params.get("id");
-    const displayArea = document.getElementById("display-area");
 
-    // Simulate slight delay for professional feel
-    setTimeout(() => {
-        fetch("certificates.json")
-            .then(response => response.json())
-            .then(data => {
-                const cert = data.find(c => c.id === certId);
-                if(cert) {
-                    displayArea.innerHTML = `
-                        <div id="result-card">
-                            <div class="data-row">
-                                <span class="label">Name</span>
-                                <span class="value">${cert.name}</span>
-                            </div>
-                            <div class="data-row">
-                                <span class="label">Role</span>
-                                <span class="value">${cert.role}</span>
-                            </div>
-                            <div class="data-row" style="border:none">
-                                <span class="label">Duration</span>
-                                <span class="value">${cert.duration}</span>
-                            </div>
-                            <div style="text-align:center">
-                                <span class="status-badge status-valid">✓ VERIFIED AUTHENTIC</span>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    displayArea.innerHTML = `
-                        <div style="padding: 20px;">
-                            <span class="status-badge status-invalid">Invalid Certificate ID</span>
-                            <p style="color:#64748b; font-size: 0.9rem; margin-top: 15px;">
-                                This ID does not match any records in our database.
-                            </p>
-                        </div>
-                    `;
-                }
-            })
-            .catch(err => {
-                displayArea.innerHTML = "Error connecting to verification server.";
-            });
-    }, 800);
+const params = new URLSearchParams(window.location.search);
+const autoID = params.get("id");
+
+if(autoID){
+    document.getElementById("certInput").value = autoID;
+    verifyCertificate();
+}
+
+function verifyCertificate() {
+
+    const certId = document.getElementById("certInput").value.trim();
+    const resultBox = document.getElementById("resultBox");
+
+    fetch("certificates.json")
+        .then(response => response.json())
+        .then(data => {
+
+            const cert = data.find(c => c.id === certId);
+
+            if(cert){
+                resultBox.innerHTML = `
+                <div class="result valid">
+                    <h3>✅ Certificate Valid</h3>
+                    <p><strong>Name:</strong> ${cert.name}</p>
+                    <p><strong>Role:</strong> ${cert.role}</p>
+                    <p><strong>Duration:</strong> ${cert.duration}</p>
+                    <p><strong>ID:</strong> ${cert.id}</p>
+                </div>`;
+            } else {
+                resultBox.innerHTML = `
+                <div class="result invalid">
+                    <h3>❌ Invalid Certificate ID</h3>
+                    <p>No record found in Cleonix database.</p>
+                </div>`;
+            }
+        });
+}
 </script>
 
 </body>
