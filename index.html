@@ -165,8 +165,18 @@
                 const cert = data.find(c => c.id.trim() === certId.trim());
                 
                 if(cert) {
-                    // Pre-fill LinkedIn Certification URL
-                    const linkedinUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(cert.role + ' - Cleonix')}&organizationName=Cleonix&issueYear=2026&issueMonth=3&certId=${encodeURIComponent(cert.id)}&certUrl=${encodeURIComponent(window.location.href)}`;
+                    // LinkedIn Direct Add Link
+                    const baseUrl = "https://www.linkedin.com/profile/add";
+                    const params = new URLSearchParams({
+                        startTask: "CERTIFICATION_NAME",
+                        name: cert.role + " - Cleonix",
+                        organizationName: "Cleonix",
+                        certId: cert.id,
+                        certUrl: window.location.href,
+                        issueYear: "2026",
+                        issueMonth: "3"
+                    });
+                    const linkedinUrl = `${baseUrl}?${params.toString()}`;
 
                     displayArea.innerHTML = `
                         <div class="result-card">
@@ -175,7 +185,8 @@
                             <div class="data-row" style="border:none"><span class="label">Duration</span><span class="value">${cert.duration}</span></div>
                             <div style="text-align:center">
                                 <span class="status-badge status-valid">✓ VERIFIED AUTHENTIC</span>
-                                <a href="${linkedinUrl}" target="_blank" class="btn btn-linkedin">
+                                <br>
+                                <a href="${linkedinUrl}" target="_blank" style="display: block; background: #0077b5; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px;">
                                     + Add to LinkedIn Profile
                                 </a>
                             </div>
@@ -189,7 +200,7 @@
                 }
             })
             .catch(err => {
-                displayArea.innerHTML = "<p style='color:red'>Error loading database.</p>";
+                displayArea.innerHTML = "<p style='color:red; text-align:center;'>Error loading database. Make sure certificates.json is in the repo.</p>";
             });
     }
 
