@@ -4,17 +4,17 @@
     "name": "Alishba Naeem",
     "role": "Junior Python Developer",
     "duration": "June 2025 – November 2026"
-  }
+  },
   {
     "id": "CLEO-2026-INT-002",
     "name": "Hashir Sameed",
-    "role": "Data Anayst",
-    "duration":  "June 2025 – November 2026"
-  }
+    "role": "Data Analyst",
+    "duration": "June 2025 – November 2026"
+  },
   {
     "id": "CLEO-2026-INT-003",
     "name": "Ashar Zia",
     "role": "Intermediate Python Developer",
-    "duration":  "June 2025 – November 2026"
+    "duration": "June 2025 – November 2026"
   }
 ]
