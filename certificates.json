@@ -2,7 +2,19 @@
   {
     "id": "CLEO-2026-INT-001",
     "name": "Alishba Naeem",
-    "role": "AI Innovation Intern",
-    "duration": "Jan 2026 – June 2026"
+    "role": "Junior Python Developer",
+    "duration": "June 2025 – November 2026"
+  }
+  {
+    "id": "CLEO-2026-INT-002",
+    "name": "Hashir Sameed",
+    "role": "Data Anayst",
+    "duration":  "June 2025 – November 2026"
+  }
+  {
+    "id": "CLEO-2026-INT-003",
+    "name": "Ashar Zia",
+    "role": "Intermediate Python Developer",
+    "duration":  "June 2025 – November 2026"
   }
 ]
