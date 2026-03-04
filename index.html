@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cleonix Certificate Verification</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        .box { padding: 20px; border: 1px solid #ccc; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<h2>Cleonix Certificate Verification Portal</h2>
+
+<div class="box">
+    <p id="result">Verifying...</p>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const certId = params.get("id");
+
+    fetch("certificates.json")
+        .then(response => response.json())
+        .then(data => {
+            const cert = data.find(c => c.id === certId);
+            if(cert){
+                document.getElementById("result").innerHTML =
+                    "<b>Name:</b> " + cert.name + "<br>" +
+                    "<b>Role:</b> " + cert.role + "<br>" +
+                    "<b>Duration:</b> " + cert.duration + "<br>" +
+                    "<b>Status:</b> VALID ✅";
+            } else {
+                document.getElementById("result").innerHTML =
+                    "❌ Invalid Certificate ID";
+            }
+        });
+</script>
+
+</body>
+</html>
