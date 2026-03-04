@@ -1,137 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cleonix Certificate Verification</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification | Cleonix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --dark-blue: #0B1C2D;
+            --success-color: #059669;
+            --error-color: #dc2626;
+            --bg-gradient: linear-gradient(135deg, #0B1C2D, #123B5A);
+        }
 
-<style>
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0B1C2D, #123B5A);
-    color: white;
-    text-align: center;
-    padding: 50px;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
 
-.container {
-    background: white;
-    color: #0B1C2D;
-    max-width: 500px;
-    margin: auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
+        .header-info { margin-bottom: 20px; text-align: center; }
+        .header-info h1 { margin: 0; letter-spacing: 2px; }
+        .header-info p { opacity: 0.8; font-weight: 300; margin-top: 5px; }
 
-h1 {
-    margin-bottom: 10px;
-}
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            color: #1f2937;
+        }
 
-input {
-    padding: 10px;
-    width: 80%;
-    margin-top: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
+        .logo-area {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
 
-button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    background: #00E676;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
+        h2 { font-size: 1rem; color: #64748b; margin-bottom: 1.5rem; font-weight: 400; }
 
-button:hover {
-    background: #00c95f;
-}
+        input {
+            padding: 12px;
+            width: 80%;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+        }
 
-.result {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-}
+        button {
+            padding: 12px 24px;
+            background: #00E676;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #0B1C2D;
+            transition: 0.3s;
+        }
 
-.valid {
-    background: #d4edda;
-    color: #155724;
-}
+        button:hover { background: #00c95f; transform: translateY(-2px); }
 
-.invalid {
-    background: #f8d7da;
-    color: #721c24;
-}
+        #display-area { margin-top: 25px; text-align: left; }
 
-.footer {
-    margin-top: 40px;
-    font-size: 12px;
-    opacity: 0.8;
-}
-</style>
+        .result-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .label { color: #94a3b8; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .value { font-weight: 600; font-size: 0.95rem; }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .status-valid { background: #dcfce7; color: var(--success-color); }
+        .status-invalid { background: #fee2e2; color: var(--error-color); }
+
+        .footer { margin-top: 30px; font-size: 12px; opacity: 0.6; }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-
 <body>
 
-<h1>Cleonix</h1>
-<p>AI & Sustainable Energy Systems</p>
+<div class="header-info">
+    <h1>CLEONIX</h1>
+    <p>AI & Sustainable Energy Systems</p>
+</div>
 
 <div class="container">
+    <div class="logo-area">Cleonix</div>
     <h2>Certificate Verification Portal</h2>
 
     <input type="text" id="certInput" placeholder="Enter Certificate ID">
-    <br>
-    <button onclick="verifyCertificate()">Verify</button>
+    <button onclick="handleManualVerify()">Verify Now</button>
 
-    <div id="resultBox"></div>
+    <div id="display-area">
+        </div>
 </div>
 
 <div class="footer">
-Verified Digital Credential | Cleonix
+    Verified Digital Credential | Cleonix Official Portal
 </div>
 
 <script>
+    const displayArea = document.getElementById("display-area");
 
-const params = new URLSearchParams(window.location.search);
-const autoID = params.get("id");
+    // Function to process and display results
+    function performVerification(certId) {
+        if(!certId) return;
+        
+        displayArea.innerHTML = '<div class="loading-spinner"></div><p style="text-align:center">Checking Records...</p>';
 
-if(autoID){
-    document.getElementById("certInput").value = autoID;
-    verifyCertificate();
-}
+        fetch("certificates.json")
+            .then(res => res.json())
+            .then(data => {
+                const cert = data.find(c => c.id.trim() === certId.trim());
+                
+                if(cert) {
+                    displayArea.innerHTML = `
+                        <div class="result-card">
+                            <div class="data-row"><span class="label">Name</span><span class="value">${cert.name}</span></div>
+                            <div class="data-row"><span class="label">Role</span><span class="value">${cert.role}</span></div>
+                            <div class="data-row" style="border:none"><span class="label">Duration</span><span class="value">${cert.duration}</span></div>
+                            <div style="text-align:center">
+                                <span class="status-badge status-valid">✓ VERIFIED AUTHENTIC</span>
+                            </div>
+                        </div>`;
+                } else {
+                    displayArea.innerHTML = `
+                        <div class="result-card" style="text-align:center">
+                            <span class="status-badge status-invalid">Invalid ID</span>
+                            <p style="font-size: 0.85rem; color: #64748b; margin-top:10px;">No record found for: <b>${certId}</b></p>
+                        </div>`;
+                }
+            })
+            .catch(err => {
+                displayArea.innerHTML = "<p style='color:red'>Error loading database.</p>";
+            });
+    }
 
-function verifyCertificate() {
+    // 1. Handle Automatic verification via URL (e.g. ?id=CLEO-001)
+    const urlParams = new URLSearchParams(window.location.search);
+    const autoId = urlParams.get("id");
+    if(autoId) {
+        document.getElementById("certInput").value = autoId;
+        performVerification(autoId);
+    }
 
-    const certId = document.getElementById("certInput").value.trim();
-    const resultBox = document.getElementById("resultBox");
-
-    fetch("certificates.json")
-        .then(response => response.json())
-        .then(data => {
-
-            const cert = data.find(c => c.id === certId);
-
-            if(cert){
-                resultBox.innerHTML = `
-                <div class="result valid">
-                    <h3>✅ Certificate Valid</h3>
-                    <p><strong>Name:</strong> ${cert.name}</p>
-                    <p><strong>Role:</strong> ${cert.role}</p>
-                    <p><strong>Duration:</strong> ${cert.duration}</p>
-                    <p><strong>ID:</strong> ${cert.id}</p>
-                </div>`;
-            } else {
-                resultBox.innerHTML = `
-                <div class="result invalid">
-                    <h3>❌ Invalid Certificate ID</h3>
-                    <p>No record found in Cleonix database.</p>
-                </div>`;
-            }
-        });
-}
+    // 2. Handle Manual button click
+    function handleManualVerify() {
+        const inputVal = document.getElementById("certInput").value;
+        performVerification(inputVal);
+    }
 </script>
 
 </body>
